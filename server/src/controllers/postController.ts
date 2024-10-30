@@ -15,7 +15,11 @@ export const getPostById = async (c: Context) => {
 
     try {
         const post = await postModel.get_post_by_id(id)
-        return c.json(post, 200)
+        if (post) {
+            return c.json(post, 200)
+        }
+
+        return c.json({ error: 'Post não encontrado' }, 404)
     } catch (e) {
         return c.json({ error: 'Erro ao buscar post' }, 500);
     }

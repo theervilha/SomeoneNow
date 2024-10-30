@@ -52,7 +52,7 @@ export const get_post_by_id = async (id: number) => {
             GROUP BY 
                 p.id;
         `, [id]);
-        return result.rows;
+        return result.rows[0] || null;
     } catch (error) {
         console.error('Error getting posts:', error);
         throw error;
