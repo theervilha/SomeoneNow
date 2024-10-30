@@ -10,6 +10,17 @@ export const getPosts = async (c: Context) => {
     }
 }
 
+export const getPostById = async (c: Context) => {
+    const id = Number(c.req.param('id'));
+
+    try {
+        const post = await postModel.get_post_by_id(id)
+        return c.json(post, 200)
+    } catch (e) {
+        return c.json({ error: 'Erro ao buscar post' }, 500);
+    }
+}
+
 export const insertPost = async (c: Context) => {
     const { title, description, category, price, images_url } = await c.req.json();
     const postVars: postModel.Post = {

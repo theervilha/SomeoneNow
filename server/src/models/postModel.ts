@@ -33,6 +33,32 @@ export const get_posts = async () => {
     }
 };
 
+export const get_post_by_id = async (id: number) => {
+    try {
+        const result = await pool.query(`
+            SELECT 
+                p.id,
+                p.title,
+                p.description,
+                p.category,
+                p.price,
+                p.created_at,
+                ARRAY_AGG(pi.image_url) AS images
+            FROM 
+                posts p
+            LEFT JOIN 
+                posts_images pi ON p.id = pi.post_id
+            WHERE p.id = $1
+            GROUP BY 
+                p.id;
+        `, [id]);
+        return result.rows;
+    } catch (error) {
+        console.error('Error getting posts:', error);
+        throw error;
+    }
+};
+
 export const insert_post = async (post: Post) => {
     const { title, description, category, price, images_url } = post;
     const client = await pool.connect();
