@@ -43,6 +43,31 @@ export const insertPost = async (c: Context) => {
     }
 }
 
+export const updatePost = async (c: Context) => {
+    const id = Number(c.req.param('id'));
+    const updates = await c.req.json();
+
+    const post = await postModel.get_post_by_id(id);
+    if (!post) {
+        return c.json({ error: "Post não encontrado" }, 404);
+    }
+
+    const updatedPostVars: postModel.Post = {
+        title: updates.title !== undefined ? updates.title : post.title,
+        description: updates.description !== undefined ? updates.description : post.description,
+        category: updates.category !== undefined ? updates.category : post.category,
+        price: updates.price !== undefined ? Number(updates.price) : post.price,
+        images_url: updates.images_url !== undefined ? updates.images_url : post.images_url,
+    };
+
+    try {
+        await postModel.update_post(id, updatedPostVars)
+        return c.json({ message: 'Post atualizado com sucesso' }, 200)
+    } catch (e) {
+        return c.json({ error: 'Erro ao inserir post' }, 500);
+    }
+}
+
 export const deletePost = async (c: Context) => {
     const id = Number(c.req.param('id'));
 
