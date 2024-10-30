@@ -42,3 +42,14 @@ export const insertPost = async (c: Context) => {
         return c.json({ error: 'Erro ao inserir post' }, 500);
     }
 }
+
+export const deletePost = async (c: Context) => {
+    const id = Number(c.req.param('id'));
+
+    try {
+        await postModel.delete_post(id)
+        return c.json({ message: 'Post excluído com sucesso' }, 200)
+    } catch (e) {
+        return c.json({ error: 'Erro ao inserir post' }, 500);
+    }
+}

@@ -82,3 +82,13 @@ export const insert_post = async (post: Post) => {
         throw error;
     }
 };
+
+export const delete_post = async (id: number) => {
+    try {
+        await pool.query(`DELETE FROM posts WHERE id = $1;`, [id]);
+        return true
+    } catch (error) {
+        console.error('Error getting posts:', error);
+        throw error;
+    }
+};
