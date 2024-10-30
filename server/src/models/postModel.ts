@@ -1,5 +1,13 @@
 import pool from '../database.js';
 
+export interface Post {
+    title: string,
+    description?: string,
+    category: string,
+    price: number,
+    images_url: string[],
+}
+
 export const get_posts = async () => {
     try {
         const result = await pool.query(`
@@ -21,6 +29,30 @@ export const get_posts = async () => {
         return result.rows;
     } catch (error) {
         console.error('Error getting posts:', error);
+        throw error;
+    }
+};
+
+export const insert_post = async (post: Post) => {
+    const { title, description, category, price, images_url } = post;
+    const client = await pool.connect();
+
+    try {
+        await client.query('BEGIN');
+
+        const query_insert_post = 'INSERT INTO posts(title, description, category, price) VALUES ($1, $2, $3, $4) RETURNING *'
+        const result = await client.query(query_insert_post, [title, description, category, price]);
+        const post_id = result.rows[0].id
+
+        for (const image_url of images_url)
+            await client.query('INSERT INTO posts_images(post_id, image_url) VALUES ($1, $2)', [post_id, image_url]);
+
+        await client.query('COMMIT');
+        return result.rows;
+
+    } catch (error) {
+        await client.query('ROLLBACK')
+        console.error('Error inserting post:', error);
         throw error;
     }
 };
