@@ -2,7 +2,10 @@ import type { LoaderFunctionArgs } from "@remix-run/node";
 import { type MetaFunction, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
-import { Link } from 'react-aria-components';
+import { Link, Button } from 'react-aria-components';
+import {
+  Form,
+} from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -32,16 +35,25 @@ export default function Post() {
             className="react-aria-Button text-blue-600 hover:text-blue-800 flex items-center space-x-1"
             href={`/posts/${post.id}/edit`}
           >
-            <i className="fas fa-edit" aria-hidden="true"></i>
             <span>Editar</span>
           </Link>
-          <Link
-            className="react-aria-Button text-red-600 hover:text-red-800 flex items-center space-x-1"
-            href={`/posts/${post.id}/delete`}
+
+          <Form
+            action="delete"
+            method="post"
+            onSubmit={(event) => {
+              const response = confirm(
+                "Confirme: Você realmente que deletar esse post?"
+              );
+              if (!response) {
+                event.preventDefault();
+              }
+            }}
           >
-            <i className="fas fa-trash" aria-hidden="true"></i>
-            <span>Excluir</span>
-          </Link>
+            <Button type="submit" className="text-red-600 hover:text-red-800 flex items-center space-x-1">
+              Deletar
+            </Button>
+          </Form>
         </div>
 
         <h2 className="text-4xl font-bold sm:text-5xl">
