@@ -2,6 +2,8 @@ import type { LoaderFunctionArgs } from "@remix-run/node";
 import { type MetaFunction, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
+import { Link } from 'react-aria-components';
+
 export const meta: MetaFunction = () => {
   return [
     { title: "Someone Now" },
@@ -23,7 +25,25 @@ export default function Post() {
 
   return (
     <div className="bg-gray-50 px-6 py-16 sm:py-24 lg:px-8">
-      <div className="mx-auto max-w-5xl space-y-8 bg-white p-8 rounded-lg shadow-md">
+      <div className="mx-auto max-w-5xl space-y-8 bg-white p-8 rounded-lg shadow-md relative">
+
+        <div className="flex justify-end space-x-4 mb-4">
+          <Link
+            className="react-aria-Button text-blue-600 hover:text-blue-800 flex items-center space-x-1"
+            href={`/posts/${post.id}/edit`}
+          >
+            <i className="fas fa-edit" aria-hidden="true"></i>
+            <span>Editar</span>
+          </Link>
+          <Link
+            className="react-aria-Button text-red-600 hover:text-red-800 flex items-center space-x-1"
+            href={`/posts/${post.id}/delete`}
+          >
+            <i className="fas fa-trash" aria-hidden="true"></i>
+            <span>Excluir</span>
+          </Link>
+        </div>
+
         <h2 className="text-4xl font-bold sm:text-5xl">
           {post.title}
         </h2>

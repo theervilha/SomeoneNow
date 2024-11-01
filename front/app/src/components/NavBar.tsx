@@ -1,4 +1,5 @@
 import { NavLink } from "@remix-run/react"
+import { Link } from 'react-aria-components';
 
 interface NavItemProps {
   href: string;
@@ -27,9 +28,9 @@ export default function NavBar() {
     <header className="bg-white border-b border-gray-300">
       <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
         <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5 text-sm font-semibold leading-6 text-gray-900">
+          <Link href="/" className="-m-1.5 p-1.5 text-sm font-semibold leading-6 text-gray-900">
             SomeoneNow
-          </a>
+          </Link>
         </div>
 
         {/* Menu principal para telas grandes */}
