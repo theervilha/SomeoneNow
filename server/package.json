@@ -6,12 +6,16 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.13.3",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
     "dotenv-cli": "^7.4.2",
     "hono": "^4.6.7",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.1"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^20.11.17",
     "@types/pg": "^8.11.10",
     "tsx": "^4.7.1"
