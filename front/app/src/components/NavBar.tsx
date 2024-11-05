@@ -1,6 +1,8 @@
 import { NavLink } from "@remix-run/react"
 import { Link } from 'react-aria-components';
 
+import { useState } from 'react';
+
 interface NavItemProps {
   href: string;
   children: React.ReactNode;
@@ -24,6 +26,8 @@ function NavItem({ href, children }: NavItemProps) {
 }
 
 export default function NavBar() {
+  const [hasAccess, setHasAccess] = useState<boolean>(false);
+
   return (
     <header className="bg-white border-b border-gray-300">
       <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
@@ -41,8 +45,8 @@ export default function NavBar() {
         </div>
 
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <NavItem href='/login'>
-            Log in
+          <NavItem href={!hasAccess ? '/login' : '/logout'}>
+            {!hasAccess ? 'Log in' : 'Logout'}
             <span aria-hidden="true">&rarr;</span>
           </NavItem>
         </div>
