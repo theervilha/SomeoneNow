@@ -1,7 +1,8 @@
 import { type Context } from "hono";
-import * as userModel from "../models/userModel.js";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+
+import * as userModel from "../models/userModel.js";
 
 export const register = async (c: Context) => {
     try {
@@ -36,13 +37,30 @@ export const login = async (c: Context) => {
             return c.json({ error: 'Senha inválida' }, 400);
         }
 
-        const token = jwt.sign({ email }, process.env.JWT_SECRET);
+        const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
         return c.json(token, 200);
     } catch (e) {
         console.error('Erro ao logar usuário: ', e)
         return c.json({ error: 'Erro ao logar usuário' }, 500);
     }
 }
+
+export const protected_access = async (c: Context) => {
+    const { token } = await c.req.json();
+
+    if (!token) {
+        return c.json({ error: 'Não autenticado' }, 401);
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        return c.json({ message: 'Acesso liberado', user: decoded }, 200);
+    } catch {
+        return c.json({ error: 'Token inválido ou expirado' }, 401);
+    }
+}
+
 
 export const getUser = async (c: Context) => {
     try {

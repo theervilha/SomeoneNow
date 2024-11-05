@@ -6,6 +6,7 @@ const userRoutes = new Hono();
 
 userRoutes.post('/register', userController.register);
 userRoutes.post('/login', userController.login);
+userRoutes.post('/protected_access', userController.protected_access);
 userRoutes.get('/:email', jwt({ secret: process.env.JWT_SECRET as string }), userController.getUser);
 
 export default userRoutes;
