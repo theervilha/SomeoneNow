@@ -5,7 +5,8 @@
     "dev": "dotenv -e ../.env -- tsx watch src/index.ts",
     "db:push": "export $(cat ../.env | xargs) && npx prisma db push",
     "db:migrate:dev": "export $(cat ../.env | xargs) && npx prisma migrate dev",
-    "db:migrate:deploy": "export $(cat ../.env | xargs) && npx prisma migrate deploy"
+    "db:migrate:deploy": "export $(cat ../.env | xargs) && npx prisma migrate deploy",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.3",
