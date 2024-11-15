@@ -27,7 +27,6 @@ export const action = async ({
         });
 
         const resp_json = await resp.json()
-        console.log('resp register:', resp_json)
 
         return redirect(`/login`);
     } catch (error) {

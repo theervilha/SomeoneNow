@@ -1,18 +1,16 @@
-import pool from '../database.js';
+import prisma from '../database.js';
 
 export interface User {
     email: string,
     password: string
 }
 
-export const register = async ({ email, password }: User) => {
+export const register = async (user: User) => {
     try {
-        const result = await pool.query(`
-            INSERT INTO users (email, password)
-            VALUES ($1, $2)
-            RETURNING *
-        `, [email, password]);
-        return result.rows;
+        const createdUser = await prisma.user.create({
+            data: user
+        })
+        return createdUser
     } catch (error) {
         console.error('Error register user:', error);
         throw error;
@@ -21,8 +19,12 @@ export const register = async ({ email, password }: User) => {
 
 export const get_user_by_email = async (email: string) => {
     try {
-        const result = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
-        return result.rows[0] || null;
+        const user = await prisma.user.findUnique({
+            where: {
+                email
+            }
+        })
+        return user
     } catch (error) {
         console.error('Error get user:', error);
         throw error;

@@ -2,10 +2,14 @@
   "name": "server",
   "type": "module",
   "scripts": {
-    "dev": "dotenv -e ../.env -- tsx watch src/index.ts"
+    "dev": "dotenv -e ../.env -- tsx watch src/index.ts",
+    "db:push": "export $(cat ../.env | xargs) && npx prisma db push",
+    "db:migrate:dev": "export $(cat ../.env | xargs) && npx prisma migrate dev",
+    "db:migrate:deploy": "export $(cat ../.env | xargs) && npx prisma migrate deploy"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.3",
+    "@prisma/client": "^5.22.0",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
     "dotenv-cli": "^7.4.2",
@@ -18,6 +22,7 @@
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^20.11.17",
     "@types/pg": "^8.11.10",
+    "prisma": "^5.22.0",
     "tsx": "^4.7.1"
   }
 }
