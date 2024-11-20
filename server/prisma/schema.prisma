@@ -18,6 +18,7 @@ model User {
   email      String   @unique @db.VarChar(100)
   password   String
   created_at DateTime @default(now())
+  posts      Post[]
 }
 
 model Post {
@@ -28,4 +29,6 @@ model Post {
   price       Decimal  @db.Decimal(10, 2)
   images_url  String[]
   created_at  DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
 }

@@ -6,26 +6,36 @@ import {
 } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
-import { userHasAccess, getAuthCookie } from "~/src/utils/userHasAccess";
+import { isAuthenticatedRequest } from '~/src/auth/isAuthenticatedRequest';
 import PostForm from '../src/components/PostForm';
 
 export const action = async ({ request }: ActionFunctionArgs) => {
+  const { isAuthenticated, userEmail } = await isAuthenticatedRequest(request);
+
+  if (!isAuthenticated) {
+    return redirect(`/login`);
+  }
+
   const formData = await request.formData();
+
   const data = {
     ...Object.fromEntries(formData),
     'images_url': [
       'https://fastly.picsum.photos/id/399/200/300.jpg?hmac=qEzeLaSETRM-rnt81YtrfXeUeHQnjAkbWh7rc8NBaMQ'
-    ]
+    ],
+    userEmail
   };
 
   try {
-    await fetch(`${process.env.SERVER_ENDPOINT}/api/posts`, {
+    const resp = await fetch(`${process.env.SERVER_ENDPOINT}/api/posts`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
+
+    if (!resp.ok) {
+      throw new Error(await resp.text())
+    }
 
     return redirect(`/`);
   } catch (error) {
@@ -38,19 +48,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  let hasAccess;
+  const { isAuthenticated, userEmail } = await isAuthenticatedRequest(request);
 
-  const cookieHeader = request.headers.get("Cookie");
-  if (cookieHeader) {
-    let authToken = getAuthCookie(cookieHeader)
-    hasAccess = await userHasAccess(authToken);
+  if (!isAuthenticated) {
+    return redirect(`/login`);
   }
 
-  if (!hasAccess) {
-    return redirect("/login");
-  }
-
-  return json({ hasAccess });
+  return json({ hasAccess: true });
 }
 
 export default function NewPost() {

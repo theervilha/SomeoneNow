@@ -1,5 +1,6 @@
 import { type Context } from "hono";
 import * as postModel from "../models/postModel.js";
+import { get_user_by_email } from "../models/userModel.js";
 
 export const getPosts = async (c: Context) => {
     try {
@@ -26,13 +27,20 @@ export const getPostById = async (c: Context) => {
 }
 
 export const insertPost = async (c: Context) => {
-    const { title, description, category, price, images_url } = await c.req.json();
+    const { title, description, category, price, images_url, userEmail } = await c.req.json();
+
+    const user = await get_user_by_email(userEmail)
+    if (!user) {
+        return c.json({ error: 'Usuário não encontrado' }, 400);
+    }
+
     const postVars: postModel.Post = {
         title: title,
         description: description,
         category: category,
         price: Number(price),
         images_url: images_url,
+        userId: user.id
     }
 
     try {
@@ -56,7 +64,7 @@ export const updatePost = async (c: Context) => {
         title: updates.title !== undefined ? updates.title : post.title,
         description: updates.description !== undefined ? updates.description : post.description,
         category: updates.category !== undefined ? updates.category : post.category,
-        price: updates.price !== undefined ? Number(updates.price) : post.price,
+        price: updates.price !== undefined ? updates.price : post.price,
         images_url: updates.images_url !== undefined ? updates.images_url : post.images_url,
     };
 
