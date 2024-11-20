@@ -6,6 +6,7 @@ export interface Post {
     category: string,
     price: number,
     images_url: string[],
+    userId?: number
 }
 
 export const get_posts = async () => {
@@ -34,7 +35,16 @@ export const get_post_by_id = async (id: number) => {
 export const insert_post = async (post: Post) => {
     try {
         const createdPost = await prisma.post.create({
-            data: post
+            data: {
+                title: post.title,
+                description: post.description,
+                category: post.category,
+                price: post.price,
+                images_url: post.images_url,
+                user: {
+                    connect: { id: post.userId }
+                }
+            }
         })
         return createdPost
     } catch (error) {
