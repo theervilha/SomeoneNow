@@ -1,17 +1,9 @@
 import {
-    type MetaFunction,
     ActionFunctionArgs,
     redirect,
 } from "@remix-run/node";
 
 import LoginForm from '../src/components/LoginForm';
-
-export const meta: MetaFunction = () => {
-    return [
-        { title: "Someone Now" },
-        { name: "description", content: "Encontre seu serviço agora" },
-    ];
-};
 
 export const action = async ({
     request,

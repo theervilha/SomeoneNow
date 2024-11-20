@@ -1,13 +1,6 @@
-import { MetaFunction, redirect } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
 import { useEffect } from "react";
-
-export const meta: MetaFunction = () => {
-    return [
-        { title: "Someone Now" },
-        { name: "description", content: "Encontre seu serviço agora" },
-    ];
-};
 
 export async function action() {
     await fetch(`${process.env.SERVER_ENDPOINT}/api/user/logout`, {

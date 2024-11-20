@@ -1,4 +1,4 @@
-import { type MetaFunction, json } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import {
   MagnifyingGlassIcon
@@ -8,13 +8,6 @@ import Post from '../src/components/Post';
 import { PostProps } from "../src/types"
 
 import { SearchField, Input, Button } from 'react-aria-components';
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Someone Now" },
-    { name: "description", content: "Encontre seu serviço agora" },
-  ];
-};
 
 function Search() {
   return (

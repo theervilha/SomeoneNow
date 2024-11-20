@@ -1,5 +1,4 @@
 import {
-  type MetaFunction,
   ActionFunctionArgs,
   redirect,
   json,
@@ -9,13 +8,6 @@ import { useLoaderData } from "@remix-run/react";
 
 import { userHasAccess, getAuthCookie } from "~/src/utils/userHasAccess";
 import PostForm from '../src/components/PostForm';
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Someone Now" },
-    { name: "description", content: "Encontre seu serviço agora" },
-  ];
-}
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();

@@ -1,18 +1,11 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { type MetaFunction, json } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
 import { Link, Button } from 'react-aria-components';
 import {
   Form,
 } from "@remix-run/react";
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Someone Now" },
-    { name: "description", content: "Encontre seu serviço agora" },
-  ];
-};
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const response = await fetch(`${process.env.SERVER_ENDPOINT}/api/posts/${params.postId}`);

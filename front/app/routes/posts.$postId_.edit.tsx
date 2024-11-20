@@ -1,5 +1,4 @@
 import {
-  type MetaFunction,
   ActionFunctionArgs,
   LoaderFunctionArgs,
   redirect,
@@ -8,13 +7,6 @@ import {
 import { useLoaderData } from "@remix-run/react";
 import PostForm from '../src/components/PostForm';
 import { PostProps } from "../src/types"
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Someone Now" },
-    { name: "description", content: "Encontre seu serviço agora" },
-  ];
-}
 
 export const action = async ({
   params,
