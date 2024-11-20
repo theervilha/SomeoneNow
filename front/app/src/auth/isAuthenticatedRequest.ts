@@ -1,4 +1,4 @@
-export async function authenticateRequest(request: Request) {
+export async function isAuthenticatedRequest(request: Request) {
     const cookieHeader = request.headers.get("Cookie");
     if (!cookieHeader) {
         return { isAuthenticated: false }

@@ -7,7 +7,7 @@ import {
 } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
-import { authenticateRequest } from '~/src/auth/auth';
+import { isAuthenticatedRequest } from '~/src/auth/isAuthenticatedRequest';
 import PostForm from '../src/components/PostForm';
 
 export const meta: MetaFunction = () => {
@@ -18,7 +18,7 @@ export const meta: MetaFunction = () => {
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const { isAuthenticated, userEmail } = await authenticateRequest(request);
+  const { isAuthenticated, userEmail } = await isAuthenticatedRequest(request);
 
   if (!isAuthenticated) {
     return redirect(`/login`);
@@ -56,7 +56,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const { isAuthenticated, userEmail } = await authenticateRequest(request);
+  const { isAuthenticated, userEmail } = await isAuthenticatedRequest(request);
 
   if (!isAuthenticated) {
     return redirect(`/login`);
